@@ -1,0 +1,17 @@
+{
+  "name": "fable-react-grid-system",
+  "version": "0.0.1",
+  "description": "Fable bindings for React Grid System",
+  "keywords": [
+    "F#",
+    "Fable",
+    "React",
+    "Grid",
+    "Responsive"
+  ],
+  "peerDependencies": {
+    "react-grid-system": "^2.7.1"
+  },
+  "author": "Justin Sacks",
+  "license": "MIT"
+}
