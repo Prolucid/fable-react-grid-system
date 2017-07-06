@@ -65,7 +65,7 @@ Target "PublishNuget" (fun _ ->
 
 
 let gitOwner = "prolucid"
-let gitName = "fable-react-toolbox"
+let gitName = "fable-react-grid-system"
 let gitHome= sprintf "https://github.com/%s" gitOwner
 
 #load "paket-files/fsharp/FAKE/modules/Octokit/Octokit.fsx"
