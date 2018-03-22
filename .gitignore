@@ -16,11 +16,12 @@ samples/**/public
 .fake/
 .paket/paket.exe
 packages/
+paket-files
 build/
 obj
 bin
 out
 
-Meta.props
+Directory.Build.props
 # git
 *.orig

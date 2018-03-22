@@ -1,5 +1,5 @@
 // include Fake libs
-#r "./packages/FAKE/tools/FakeLib.dll"
+#r "./packages/build/FAKE/tools/FakeLib.dll"
 #r "System.IO.Compression.FileSystem"
 
 open System
@@ -11,10 +11,9 @@ open Fake.Git
 
 // Filesets
 let projects  = !! "src/**.fsproj"
-let buildDir = "src/bin"
 
 
-let dotnetcliVersion = "1.0.1"
+let dotnetcliVersion = "2.1.100"
 let mutable dotnetExePath = "dotnet"
 
 let runDotnet workingDir =
@@ -26,7 +25,8 @@ Target "InstallDotNetCore" (fun _ ->
 )
 
 Target "Clean" (fun _ ->
-    CleanDir buildDir
+    CleanDir "src/obj"
+    CleanDir "src/bin"
     runDotnet "src" "restore"
 )
 
@@ -48,19 +48,19 @@ Target "Meta" (fun _ ->
       sprintf "<Version>%s</Version>" (string release.SemVer)
       "</PropertyGroup>"
       "</Project>"]
-    |> WriteToFile false "Meta.props"
+    |> WriteToFile false "Directory.Build.props"
 )
 
 // --------------------------------------------------------------------------------------
 // Build a NuGet package
 
 Target "Package" (fun _ ->
-    runDotnet "src" "pack"
+    runDotnet "src" "pack -c Release"
 )
 
 Target "PublishNuget" (fun _ ->
     let args = sprintf "nuget push Fable.ReactGridSystem.%s.nupkg -s nuget.org -k %s" (string release.SemVer) (environVar "nugetkey")
-    runDotnet "src/bin/Debug" args
+    runDotnet "src/bin/Release" args
 )
 
 
@@ -68,7 +68,7 @@ let gitOwner = "prolucid"
 let gitName = "fable-react-grid-system"
 let gitHome= sprintf "https://github.com/%s" gitOwner
 
-#load "paket-files/fsharp/FAKE/modules/Octokit/Octokit.fsx"
+#load "paket-files/build/fsharp/FAKE/modules/Octokit/Octokit.fsx"
 open Octokit
 
 Target "Release" (fun _ ->
@@ -103,7 +103,8 @@ Target "Release" (fun _ ->
 Target "Publish" DoNothing
 
 // Build order
-"Meta"
+"Clean"
+  ==> "Meta"
   ==> "InstallDotNetCore"
 //   ==> "Install"
   ==> "Build"
@@ -113,6 +114,7 @@ Target "Publish" DoNothing
 
 "Publish"
   <== [ "Build"
+        "Package"
         "PublishNuget"
         "Release" ]
   
