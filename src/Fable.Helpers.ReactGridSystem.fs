@@ -49,7 +49,7 @@ type ColProps =
     | Pull of ShapeProps list
     interface IRGProp  
 
-let inline rgsEl<[<Pojo>]'P when 'P :> IHTMLProp> (a:ComponentClass<'P>) (b:IHTMLProp list) c = Fable.Helpers.React.from a (keyValueList CaseRules.LowerFirst b |> unbox) c
+let inline rgsEl<'P when 'P :> IHTMLProp> (a:ComponentClass<'P>) (b:IHTMLProp list) c = Fable.Helpers.React.from a (keyValueList CaseRules.LowerFirst b |> unbox) c
 
 let Container = importMember<Fable.Import.React.ComponentClass<IHTMLProp>> "react-grid-system"
 let inline container b c = rgsEl Container b c

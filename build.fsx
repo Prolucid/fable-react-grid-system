@@ -13,7 +13,7 @@ open Fake.Git
 let projects  = !! "src/**.fsproj"
 
 
-let dotnetcliVersion = "2.1.100"
+let dotnetcliVersion = "2.1.402"
 let mutable dotnetExePath = "dotnet"
 
 let runDotnet workingDir =
